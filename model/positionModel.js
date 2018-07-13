@@ -4,6 +4,7 @@ mongoose.connect("mongodb://localhost:27017/symbol");
 
 //保存职位时集合结构
 const schema = mongoose.Schema({
+	
 	logo:String,
 	position:String,
 	company:String,
@@ -40,7 +41,27 @@ const PositionModel = {
 			.skip((pageIndex-1)*pageSize)
 			.then(success,error);
 	},
-	//删除所在行数据
+	
+	//删除所在行数据按id删除
+	deletePosition:function(dataId,success,error){
+		Position.findByIdAndDelete(dataId)
+					.then(success,error);
+		
+	},
+	//获取数据，修改
+	updatePosition:function(positionInfo,success,error){
+//		const pos = new Position(positionInfo);
+		//查找源数据  //{_id:id}
+		Position.update({_id:positionInfo.id},{$set:positionInfo},(err,data)=>{
+			if(err){
+				error(err);
+				return
+			}
+			success(data);
+		});
+		// 调用 findByIdAndUpdate() 方法保存到数据库
+//		pos.findByIdAndUpdate(upId,positionInfo).then(success,error);
+	}
 	
 }
 module.exports = PositionModel;

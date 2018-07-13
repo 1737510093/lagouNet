@@ -5,6 +5,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<meta http-equiv="X-UA-Compatible" content="ie=edge" />
 	<link rel="stylesheet" type="text/css" href="/lib/bootstrap/css/bootstrap.min.css"/>
+	<link rel="stylesheet" type="text/css" href="../css/common.css"/>
 	<title>头部</title>
 </head>
 <body>
@@ -18,17 +19,17 @@
 	<!--表格-->
 	<div class="container">
 		<table class="table table-bordered table-hover text-center">
-		  <thead>
+		  <thead >
 		  	<tr>
-		  		<th>序号</th>
-			  	<th>公司logo</th>
-			  	<th>职位名称</th>
-			  	<th>公司名称</th>
-			  	<th>工作经验</th>
-			  	<th>职位类型</th>
-			  	<th>工作地点</th>
-			  	<th>职位薪资</th>
-			  	<th>操作</th>
+		  		<th class="text-center">序号</th>
+			  	<th class="text-center">公司logo</th>
+			  	<th class="text-center">职位名称</th>
+			  	<th class="text-center">公司名称</th>
+			  	<th class="text-center">工作经验</th>
+			  	<th class="text-center">职位类型</th>
+			  	<th class="text-center">工作地点</th>
+			  	<th class="text-center">职位薪资</th>
+			  	<th class="text-center" colspan="2">操作</th>
 		  	</tr>
 		  </thead>
 		  <tbody class="pos_tab">
@@ -38,16 +39,20 @@
 			  {{each list pos index}}
 			  	<tr data-id={{pos._id}}>
 			  		<td>{{index+1}}</td>
-				  	<td><img src="{{pos.logo}}" width="50" height="25"/></td>
-				  	<td>{{pos.position}}</td>
-				  	<td>{{pos.company}}</td>
-				  	<td>{{pos.time}}</td>
-				  	<td>{{pos.type}}</td>
-				  	<td>{{pos.area}}</td>
-				  	<td>{{pos.salary}}</td>
-				  	<td><a href="javascript:void(0)">修改</a>
+				  	<td><img src="{{pos.logo}}" width="50" height="50"/></td>
+				  	<td class="position">{{pos.position}}</td>
+				  	<td class="company">{{pos.company}}</td>
+				  	<td class="time">{{pos.time}}</td>
+				  	<td class="type">{{pos.type}}</td>
+				  	<td class="area">{{pos.area}}</td>
+				  	<td class="salary">{{pos.salary}}</td>
+				  	<td>
+				  		<a class="update" data-toggle="modal" data-target="#updatePosModal">修改</a>
+				  	</td>
+				  	<td>
 				  		<a class="del" href="javascript:void(0)">删除</a>
 				  	</td>
+				  	
 			  	</tr>
 			  {{/each}}
 			</script>  
@@ -73,13 +78,14 @@
 		  </ul>
 		</nav>
 	</div>
-	<!--模态框-->
+	
+	<!--添加模态框-->
 	<div class="modal fade" id="addPosModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 		<div class="modal-dialog" role="document">
 		    <div class="modal-content">
 		      <div class="modal-header">
 		        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-		        <h4 class="modal-title" id="addPosModalLabel">添加职位</h4>
+		        <h4 class="modal-title" id="myModalLabel">添加职位</h4>
 		      </div>
 		      <div class="modal-body">
 		      	<div class="alert alert-danger hide add_pos_error" role="alert">
@@ -118,12 +124,63 @@
 		      </div>
 		      <div class="modal-footer">
 		        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-		        <button type="button" class="btn btn-primary" id="btn_add_pos">添加</button>
+		        <button type="button" class="btn btn-primary btn_add_pos">添加</button>
 		      </div>
 		    </div>
 		</div>
 	</div>
 	
+	<!--修改模态框-->
+	<div class="modal fade" id="updatePosModal" tabindex="-1" role="dialog" aria-labelledby="updatePosModalLabel">
+		<div class="modal-dialog" role="document">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		        <h4 class="modal-title" id="updatePosModalLabel">修改职位</h4>
+		      </div>
+		      <div class="modal-body">
+		      	<div class="alert alert-danger hide update_pos_error" role="alert">
+		      		添加失败，请重试
+		      	</div>
+		        <form class="update_pos_form">
+		        		<input type="text" name="id" id="ID" class="hide"/>
+					  <div class="form-group">
+					    <label for="logo">公司logo</label>
+					    <input type="file" class="form-control" id="updatePosLogo" name="logo">
+					  </div>
+					  <div class="form-group">
+					    <label for="addPosName">职位名称</label>
+					    <input type="text" class="form-control" id="updatePosName" name="position" placeholder="输入职位名">
+					  </div>
+					  <div class="form-group">
+					    <label for="addPosCompany">公司名称</label>
+					    <input type="text" class="form-control" id="updatePosCompany" name="company" placeholder="输入公司名">
+					  </div>
+					  <div class="form-group">
+					    <label for="addPosTime">工作经验</label>
+					    <input type="text" class="form-control" id="updatePosTime" name="time" placeholder="输入工作经验">
+					  </div>
+					  <div class="form-group">
+					    <label for="addPosType">职位类型</label>
+					    <input type="text" class="form-control" id="updatePosType" name="type" placeholder="输入职位类型">
+					  </div>
+					  <div class="form-group">
+					    <label for="addPosArea">工作地点</label>
+					    <input type="text" class="form-control" id="updatePosArea" name="area" placeholder="输入工作地点">
+					  </div>
+					  <div class="form-group">
+					    <label for="addPosSalary">岗位薪资</label>
+					    <input type="text" class="form-control" id="updatePosSalary" name="salary" placeholder="输入岗位薪资">
+					  </div>
+				</form>
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+		        <button type="button" class="btn btn-primary btn_update_pos">修改</button>
+		      </div>
+		    </div>
+		</div>
+	</div>
 	
 	<script src="/lib/jquery/jquery-1.12.4.min.js" type="text/javascript" charset="utf-8"></script>
 	<script src="/lib/bootstrap/js/bootstrap.min.js" type="text/javascript" charset="utf-8"></script>
@@ -132,6 +189,6 @@
 	<script src="/js/common/RegisterModal.js" type="text/javascript" charset="utf-8"></script>
 	<script src="/js/common/Header.js" type="text/javascript" charset="utf-8"></script>
 	<script src="/js/position/position.js" type="text/javascript" charset="utf-8"></script>
-	
+
 </body>
 </html>

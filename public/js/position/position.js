@@ -1,8 +1,8 @@
 function Position(){
 	this.loadHeader();
 	this.addListener();
-	
 	this.check();
+	
 }
 
 $.extend(Position.prototype,{
@@ -26,7 +26,7 @@ $.extend(Position.prototype,{
 	//注册事件监听
 	addListener:function(){
 		//添加职位
-		$("#btn_add_pos").on("click", $.proxy(this.handleAddPosition,this));
+		$(".btn_add_pos").on("click", $.proxy(this.handleAddPosition,this));
 		const that = this;
 		
 		//点击页码查询该页信息
@@ -36,22 +36,40 @@ $.extend(Position.prototype,{
 			//调用listByPage()查询
 			that.listByPage(currentPage);
 			//激活效果
-			$("li").removeClass("active");
-			$(this).addClass("active");
+			$(this).addClass("active").siblings().removeClass("active");
 		});
 		
 		//处理删除职位的方法
 		$(".pos_tab").delegate(".del","click",function(){
-			//获取当前
-		})
-	},
+			//获取当前删除行的数据id
+			const dataId = $(this).parents("tr").attr("data-id");
+			that.deleteById(dataId)
+		});
+		
+		//获取要修改的职位信息
+		$(".pos_tab").delegate(".update","click",function(){
+			$("#updatePosLogo").attr("accept",$(this).parents("tr").find("img").attr("src"));
+			$("#updatePosName").val($(this).parents("tr").find(".position").text());
+			$("#updatePosCompany").val($(this).parents("tr").find(".company").text());
+			$("#updatePosTime").val($(this).parents("tr").find(".time").text());
+			$("#updatePosType").val($(this).parents("tr").find(".type").text());
+			$("#updatePosArea").val($(this).parents("tr").find(".area").text());
+			$("#updatePosSalary").val($(this).parents("tr").find(".salary").text());
+			const upId = $(this).parents("tr").attr("data-id");
+			$("#ID").val(upId);
+			
+		});
+		//点击修改
+		$(".btn_update_pos").on("click",$.proxy(this.updateById,this));
 
+		
+	},
 
 	
 	//处理添加职位的方法
 	handleAddPosition:function(){
 		var formData = new FormData($(".add_pos_form").get(0));//获取表单dom元素
-		
+		const that =this;
 		//利用ajax向服务器传递数据，包括图像资源
 		$.ajax({
 			type:"post",
@@ -63,6 +81,8 @@ $.extend(Position.prototype,{
 			success:function(data){//成功
 				if(data.res_code===0){//成功
 					$("#addPosModal").modal("hide");
+					alert("添加成功 ");
+					that.listByPage(1);
 				}
 				else{
 					$(".add_pos_error").removeClass("hide");
@@ -78,7 +98,7 @@ $.extend(Position.prototype,{
 //				$(".add_pos_error").removeClass("hide");
 //			}
 //		},"json");
-},
+	},
 	//按页查询职位数据并渲染
 	listByPage:function(currentPage){
 		//如果没有页码默认第一页
@@ -92,9 +112,53 @@ $.extend(Position.prototype,{
 				$(".pos_tab").html(html);
 			}
 		},"json");
+	},
+	
+	//按id查找职位数据并删除
+	deleteById:function(dataId){
+		//ajax查询
+		const that =this;
+		$.get("/api/position/del",{dataId:dataId},function(data){
+			if(data.res_code===0){//成功
+				alert("删除成功");
+				that.listByPage(1);
+			}
+		})
+	},
+	
+	//按当前id查找职位数据并修改
+	updateById:function(){
+		//ajax查询
+		const that =this;
+		const formData = new FormData($(".update_pos_form").get(0));//获取表单dom元素
+		
+		//利用ajax向服务器传递数据，包括图像资源
+		$.ajax({
+			type:"post",
+			url:"/api/position/update",
+			data:formData,//向服务器传递的数据
+			processData:false ,//不需要将data转换为查询字符串
+			contentType:false,//不设置content-type请求头
+			dataType:"json",
+			success:function(data){//成功
+				if(data.res_code===0){//成功
+					$("#updatePosModal").modal("hide");
+//					alert("修改成功 ");
+					that.listByPage(1);
+				}
+				else{
+					$(".update_pos_error").removeClass("hide");
+					
+				}
+			}
+		});
+//		$.get("/api/position/update",{upId:upId},function(data){
+//			if(data.res_code===0){//成功
+//				alert("成功");
+//				location.reload();
+//			}
+//		})
 	}
-	
-	
 });
 
 new Position();

@@ -6,3 +6,7 @@
 	width: 85%;
 	margin: 0 auto;
 }
+td{
+	height: 50px;
+	line-height: 50px!important;
+}

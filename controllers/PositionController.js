@@ -6,7 +6,7 @@ const PositionController = {
 		//获取请求中传递的职位信息
 		//get:req.query;post:req.body
 		const{position,company,time,type,area,salary}=req.body;
-		console.log("上传文件:"+req.file.filename);
+//		console.log("上传文件:"+req.file.filename);
 		let logo="";
 		if(req.file){//有文件上传
 			logo="/upload/"+req.file.filename;
@@ -41,7 +41,7 @@ const PositionController = {
 			//data中存放的是查询成功的数据
 			res.json({
 				res_code:0,
-				res_err:"",
+				res_error:"",
 				res_body:data
 			})
 			
@@ -52,6 +52,54 @@ const PositionController = {
 				res_body:{}
 			})
 		});
-	}
+	},
+	
+	//查询指定删除职位信息
+	del:function(req,res,next){
+		//从请求中获取查询的职位id
+		const{dataId}=req.query;
+		PositionModel.deletePosition(dataId,(data)=>{
+			res.json({
+				res_code:0,
+				res_error:"",
+				res_body:data
+			})
+		},(err)=>{
+			res.json({
+				res_code:-1,
+				res_error:err,
+				res_body:{}
+			})
+		});
+	},
+	
+	
+	//修改职位信息
+	update:function(req,res,next){
+//		const{upId}=req.query;
+		
+		const info = {id,position,company,time,type,area,salary}=req.body;
+//		console.log("上传文件:"+req.file.filename);
+		let logo="";
+		if(req.file){//有文件上传
+			logo="/upload/"+req.file.filename;
+			info ={id,logo,position,company,time,type,area,salary};
+		}
+		
+		PositionModel.updatePosition(info,(data)=>{
+			res.json({
+				res_code:0,
+				res_error:"",
+				res_body:data
+			})
+		},(err)=>{
+			res.json({
+				res_code:-1,
+				res_error:err,
+				res_body:{}
+			})
+		});
+	},
+	
 };
 module.exports = PositionController;

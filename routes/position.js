@@ -23,6 +23,11 @@ var upload = multer({ storage: storage })
 //实现文件上传
 router.post('/add',upload.single("logo"),PositionController.add);//input-file-name:logo
 //路由:查询职位
-router.get("/list",PositionController.list);
+router.get('/list',PositionController.list);
+//删除职位
+router.get('/del',PositionController.del);
+
+//修改职位信息
+router.post('/update',upload.single("logo"),PositionController.update);
 
 module.exports = router;
