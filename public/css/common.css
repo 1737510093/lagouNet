@@ -1,12 +1,35 @@
-.navbar{
+.navbar {
 	border-radius: 0px;
-	margin-top:15px
+	margin-top: 15px
 }
-.alert{
+body{
+	position: relative;
+}
+.alert {
 	width: 85%;
 	margin: 0 auto;
 }
-td{
+
+td {
 	height: 50px;
 	line-height: 50px!important;
 }
+
+.yes{
+	padding-left: 95px;
+	width: 300px;
+	height: 90px;
+	line-height: 90px;
+	text-align: center;
+	color: lightseagreen;
+	font-size: 26px;
+	border: 1px solid #CCCCCC;
+	box-shadow:  #D5D5D5 0 0 5px;
+	background:white url(../img/yech.png) no-repeat 70px center;
+	background-size:25%;
+	position: absolute;
+	top: 50%;
+	left: 40%;
+}
+
+

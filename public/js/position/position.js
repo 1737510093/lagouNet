@@ -30,7 +30,7 @@ $.extend(Position.prototype,{
 		const that = this;
 		
 		//点击页码查询该页信息
-		$(".pagination").delegate("li","click",function(){
+		$(".pagination").delegate(".li","click",function(){
 			//获取当前点击的页码
 			const currentPage = $(this).find("a").text();
 			//调用listByPage()查询
@@ -59,9 +59,33 @@ $.extend(Position.prototype,{
 			$("#ID").val(upId);
 			
 		});
-		//点击修改
+		//点击修改保存
 		$(".btn_update_pos").on("click",$.proxy(this.updateById,this));
-
+		
+		//前后翻页
+		let currentPage = 1;
+		const points = $(".li");
+		
+//		console.log(points);
+		$("#prev").click(function(){
+			currentPage-=1;
+			if(currentPage<1){
+				currentPage=1
+			}
+			$(points[currentPage-1]).addClass("active").siblings().removeClass("active");
+			that.listByPage(currentPage);
+			
+		})
+			
+		
+		$("#next").click(function(){
+			currentPage+=1;
+			if(currentPage>5){
+				currentPage=5
+			}
+			$(points[currentPage-1]).addClass("active").siblings().removeClass("active");
+			that.listByPage(currentPage);
+		})
 		
 	},
 
@@ -81,7 +105,7 @@ $.extend(Position.prototype,{
 			success:function(data){//成功
 				if(data.res_code===0){//成功
 					$("#addPosModal").modal("hide");
-					alert("添加成功 ");
+					$("#yes").removeClass("hide").delay(1300).hide(400);//执行成功提示
 					that.listByPage(1);
 				}
 				else{
@@ -120,7 +144,7 @@ $.extend(Position.prototype,{
 		const that =this;
 		$.get("/api/position/del",{dataId:dataId},function(data){
 			if(data.res_code===0){//成功
-				alert("删除成功");
+				$("#yes").removeClass("hide").delay(1300).hide(400);//执行成功提示
 				that.listByPage(1);
 			}
 		})
@@ -143,7 +167,7 @@ $.extend(Position.prototype,{
 			success:function(data){//成功
 				if(data.res_code===0){//成功
 					$("#updatePosModal").modal("hide");
-//					alert("修改成功 ");
+					$("#yes").removeClass("hide").delay(1300).hide(400);//执行成功提示
 					that.listByPage(1);
 				}
 				else{

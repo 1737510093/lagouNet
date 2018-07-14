@@ -60,7 +60,7 @@
 		<!--分页-->
 		<nav aria-label="Page navigation" class="pull-right">
 		  <ul class="pagination">
-		    <li class="disabled">
+		    <li id="prev">
 		      <a href="#" aria-label="Previous">
 		        <span aria-hidden="true">&laquo;</span>
 		      </a>
@@ -70,7 +70,7 @@
 		    <li class="li"><a href="#">3</a></li>
 		    <li class="li"><a href="#">4</a></li>
 		    <li class="li"><a href="#">5</a></li>
-		    <li class="disabled">
+		    <li id="next">
 		      <a href="#" aria-label="Next">
 		        <span aria-hidden="true">&raquo;</span>
 		      </a>
@@ -181,6 +181,9 @@
 		    </div>
 		</div>
 	</div>
+	
+	<!--弹出框-->
+	<div class="yes hide" id="yes">成功！</div>
 	
 	<script src="/lib/jquery/jquery-1.12.4.min.js" type="text/javascript" charset="utf-8"></script>
 	<script src="/lib/bootstrap/js/bootstrap.min.js" type="text/javascript" charset="utf-8"></script>
